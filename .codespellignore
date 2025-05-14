@@ -1,0 +1,25 @@
+# Common words that might be flagged incorrectly
+feluda
+tattle
+tesseract
+resnet
+tmk
+pdqf
+umap
+tsne
+numba
+mypyc
+crosshair
+dacite
+pydub
+werkzeug
+pydantic
+structlog
+opentelemetry
+sigstore
+sbom
+slsa
+fpga
+asic
+neuromorphic
+metamorphic

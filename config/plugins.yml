@@ -1,0 +1,17 @@
+# Feluda Plugin Configuration
+
+plugins:
+  # Sample plugin
+  examples.plugins.sample_plugin.SamplePlugin:
+    enabled: true
+    config:
+      param1: value1
+      param2: value2
+  
+  # Sample operator plugin
+  examples.plugins.sample_plugin.SampleOperatorPlugin:
+    enabled: true
+    config:
+      operator_parameters:
+        param1: value1
+        param2: value2

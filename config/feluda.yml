@@ -1,0 +1,76 @@
+# Feluda Configuration
+
+# General configuration
+debug: false
+log_level: INFO
+log_file: logs/feluda.log
+
+# API configuration
+api_host: 0.0.0.0
+api_port: 8000
+api_workers: 4
+api_timeout: 60
+
+# Dashboard configuration
+dashboard_host: 0.0.0.0
+dashboard_port: 8050
+
+# Database configuration
+database_url: sqlite:///data/feluda.db
+database_pool_size: 5
+database_max_overflow: 10
+
+# Cache configuration
+cache_url: redis://localhost:6379/0
+cache_ttl: 300
+
+# Queue configuration
+queue_url: amqp://guest:guest@localhost:5672/%2F
+queue_name: feluda
+
+# Storage configuration
+storage_url: file:///data/storage
+storage_bucket: feluda
+
+# Security configuration
+secret_key: change_me
+jwt_algorithm: HS256
+jwt_expiration: 3600
+
+# Observability configuration
+telemetry_enabled: true
+telemetry_url: http://localhost:4317
+metrics_enabled: true
+metrics_url: http://localhost:9090
+tracing_enabled: true
+tracing_url: http://localhost:14268
+
+# Plugin configuration
+plugin_dirs:
+  - plugins
+  - examples/plugins
+plugin_config_file: config/plugins.yml
+
+# Operator configuration
+operator_config_file: config/operators.yml
+
+# Custom configuration
+custom:
+  # Add custom configuration here
+  feature_flags:
+    enable_ai_agents: true
+    enable_hardware_acceleration: false
+    enable_formal_verification: true
+  
+  # Performance tuning
+  performance:
+    use_numba: true
+    use_gpu: false
+    batch_size: 32
+    num_workers: 4
+  
+  # Security settings
+  security:
+    enable_homomorphic_encryption: false
+    enable_zero_knowledge_proofs: false
+    enable_secure_multiparty_computation: false

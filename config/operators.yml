@@ -1,0 +1,20 @@
+# Feluda Operator Configuration
+
+operators:
+  # Text sentiment analysis operator
+  TextSentimentAnalysis:
+    enabled: true
+    parameters:
+      model: distilbert-base-uncased-finetuned-sst-2-english
+      threshold: 0.5
+      batch_size: 32
+      device: cpu
+  
+  # Image processor operator
+  ImageProcessor:
+    enabled: true
+    parameters:
+      resize_width: 224
+      resize_height: 224
+      normalize: true
+      device: cpu

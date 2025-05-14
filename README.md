@@ -21,6 +21,16 @@ When we built Feluda, we were focusing on the unique challenges of social media 
 - Support for hash-based search using pHash.
 - Text extraction from images and indexing into the engine.
 - Entity extraction from text and images and indexing into the engine.
+- Formally verified core components with contract programming.
+- Zero-trust secure and verifiable lifecycle.
+- Hardware acceleration hooks for performance optimization.
+- Advanced cryptography with homomorphic encryption, zero-knowledge proofs, and secure multi-party computation.
+- Resilience patterns including circuit breakers and self-healing capabilities.
+- Comprehensive observability with structured logging, tracing, and metrics.
+- AI agent swarm integration for collaborative development and QA.
+- Advanced testing techniques including chaos testing, fuzzing, and metamorphic testing.
+- Hardware co-design hooks for FPGA, ASIC, quantum, and neuromorphic computing.
+- Autonomic systems with ML-driven tuning and self-healing capabilities.
 
 ## Basic Usage
 
@@ -49,7 +59,7 @@ pip install feluda-vid-vec-rep-clip
 
 Feluda uses a configuration file (`.yml`) to define the operators and their parameters. This allows you to customize your workflow without modifying the code. You will have to create this `.yml` file manually.
 
-Here’s an example configuration file (`config.yml`):
+Here's an example configuration file (`config.yml`):
 
 ```yaml
 operators :
@@ -67,9 +77,11 @@ operators :
 - **`name`**: The name of the operator.
 - **`parameters`**: Any other Operator specific parameters.
 
-### Code Example
+### Code Examples
 
-Here’s a simple example to demonstrate how to use Feluda:
+#### Using Feluda with Operators
+
+Here's a simple example to demonstrate how to use Feluda with operators:
 
 ```python
 from feluda import Feluda
@@ -84,6 +96,72 @@ feluda.setup()
 # Access an operator and run a task
 operator = feluda.operators.get()["vid_vec_rep_clip"]
 result = operator.run("path/to/example.mp4")
+print(result)
+```
+
+#### Creating a Custom Operator with BaseFeludaOperator
+
+Here's an example of creating a custom operator using the new BaseFeludaOperator class:
+
+```python
+from typing import Dict, Any, Union
+from pydantic import BaseModel, Field
+import deal
+
+from feluda.base_operator import BaseFeludaOperator
+from feluda.models.data_models import MediaContent
+
+class MyOperatorParameters(BaseModel):
+    """Parameters for my custom operator."""
+    
+    threshold: float = Field(
+        default=0.5,
+        description="Threshold for processing."
+    )
+    
+    use_gpu: bool = Field(
+        default=False,
+        description="Whether to use GPU for processing."
+    )
+
+class MyCustomOperator(BaseFeludaOperator[Union[str, MediaContent], Dict[str, Any], MyOperatorParameters]):
+    """
+    A custom operator for Feluda.
+    
+    This operator demonstrates the use of the BaseFeludaOperator class with contracts.
+    """
+    
+    name = "MyCustomOperator"
+    description = "A custom operator for demonstration purposes."
+    version = "1.0.0"
+    parameters_model = MyOperatorParameters
+    
+    def _initialize(self) -> None:
+        """Initialize the operator."""
+        # Initialization code here
+        pass
+    
+    def _validate_input(self, input_data: Union[str, MediaContent]) -> bool:
+        """Validate the input data."""
+        if isinstance(input_data, str):
+            return len(input_data) > 0
+        elif isinstance(input_data, MediaContent):
+            return input_data.content_data is not None or input_data.content_uri is not None
+        return False
+    
+    @deal.ensure(lambda result: isinstance(result, dict))
+    def _execute(self, input_data: Union[str, MediaContent]) -> Dict[str, Any]:
+        """Execute the operator on the input data."""
+        # Processing code here
+        return {
+            "result": "Processed data",
+            "threshold_used": self.parameters.threshold,
+            "gpu_used": self.parameters.use_gpu
+        }
+
+# Usage
+operator = MyCustomOperator(parameters={"threshold": 0.7, "use_gpu": True})
+result = operator.run("input data")
 print(result)
 ```
 
